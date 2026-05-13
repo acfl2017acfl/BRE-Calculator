@@ -5,264 +5,315 @@
 <title>ACFL BRE Calculator</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f5f5f5;
-        margin: 0;
-    }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f9;
+}
 
-    header {
-        background: #e85222;
-        color: white;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+header {
+    background: #e85222;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
-    header img {
-        height: 40px;
-    }
+header img {
+    height: 40px;
+}
 
-    .container {
-        max-width: 900px;
-        margin: 20px auto;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
+.main {
+    display: flex;
+    height: calc(100vh - 70px);
+}
 
-    h2 {
-        color: #e85222;
-    }
+/* LEFT PANEL */
+.left {
+    width: 50%;
+    padding: 20px;
+    background: #ffffff;
+    overflow: hidden;
+}
 
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
+/* RIGHT PANEL */
+.right {
+    width: 50%;
+    padding: 20px;
+    background: #fff3ef;
+}
 
-    label {
-        font-size: 14px;
-    }
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
 
-    input, select {
-        width: 100%;
-        padding: 8px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
+/* INPUT STYLE */
+.field {
+    display: flex;
+    flex-direction: column;
+}
 
-    button {
-        background: #e85222;
-        color: white;
-        border: none;
-        padding: 12px;
-        width: 100%;
-        margin-top: 20px;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-    }
+label {
+    font-size: 12px;
+    margin-bottom: 3px;
+}
 
-    button:hover {
-        background: #c9441c;
-    }
+input, select {
+    height: 32px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+}
 
-    .result {
-        margin-top: 20px;
-        padding: 15px;
-        border-radius: 8px;
-        background: #fff3ef;
-    }
+/* ERROR */
+.error {
+    color: red;
+    font-size: 11px;
+}
 
-    .result h3 {
-        margin: 5px 0;
-    }
+/* BUTTON */
+button {
+    margin-top: 15px;
+    background: #e85222;
+    color: white;
+    border: none;
+    height: 36px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #c9441c;
+}
+
+/* RESULT CARD */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.result-item {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.score {
+    font-size: 32px;
+    color: #e85222;
+    font-weight: bold;
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-    <h1>ACFL BRE Calculator</h1>
-    <!-- Replace with actual logo -->
-    <img src="https://via.placeholder.com/100x40?text=ACFL" alt="ACFL Logo">
+    <h2>ACFL BRE Calculator</h2>
+    <img src="ACFL Logo PNG WhiteBG.png">
 </header>
 
-<div class="container">
+<div class="main">
 
-<h2>Input Details</h2>
+<!-- LEFT SIDE -->
+<div class="left">
 
 <div class="grid">
 
-<label>Residential Ownership</label>
+<div class="field">
+<label>Residential</label>
 <select id="res">
-    <option value="SELF">Self Owned</option>
-    <option value="FAMILY">Family Owned</option>
-    <option value="RENT">Rented</option>
+<option value="SELF">Self Owned</option>
+<option value="FAMILY">Family Owned</option>
+<option value="RENT">Rented</option>
 </select>
+</div>
 
+<div class="field">
 <label>Business Premise</label>
 <select id="premise">
-    <option value="OWNED">Owned</option>
-    <option value="RENTED">Rented</option>
+<option value="OWNED">Owned</option>
+<option value="RENTED">Rented</option>
 </select>
+</div>
 
-<label>Years in Premise</label>
+<div class="field">
+<label>Premise Years</label>
 <input type="number" id="premise_years">
+<div class="error" id="e1"></div>
+</div>
 
+<div class="field">
 <label>Co-Borrower</label>
 <select id="co">
-    <option value="YES">Same Household</option>
-    <option value="NO">Out of Station</option>
+<option value="YES">Same Household</option>
+<option value="NO">Out of Station</option>
 </select>
+</div>
 
-<label>Business Vintage (Years)</label>
+<div class="field">
+<label>Business Vintage</label>
 <input type="number" id="vintage">
+<div class="error" id="e2"></div>
+</div>
 
+<div class="field">
 <label>Sector Risk</label>
 <select id="sector">
-    <option value="LOW">Low</option>
-    <option value="MEDIUM">Medium</option>
-    <option value="HIGH">High</option>
+<option value="LOW">Low</option>
+<option value="MEDIUM">Medium</option>
+<option value="HIGH">High</option>
 </select>
+</div>
 
+<div class="field">
 <label>Household Expense</label>
 <input type="number" id="expense">
+</div>
 
-<label>Business Income</label>
+<div class="field">
+<label>Household Income</label>
 <input type="number" id="income">
+<div class="error" id="e3"></div>
+</div>
 
+<div class="field">
 <label>EMI</label>
 <input type="number" id="emi">
+</div>
 
+<div class="field">
 <label>Bureau Score</label>
 <input type="number" id="bureau">
+<div class="error" id="e4"></div>
+</div>
 
 </div>
 
-<button onclick="calculate()">Calculate Score</button>
+<button onclick="calculate()">Calculate</button>
 
-<div class="result" id="result"></div>
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="right">
+
+<div class="card" id="result">
+
+<div class="score">--</div>
+
+<div class="result-item">Risk: --</div>
+<div class="result-item">Decision: --</div>
+<div class="result-item">Interest Rate: --</div>
+
+</div>
+
+</div>
 
 </div>
 
 <script>
 
+function validate() {
+    let valid = true;
+
+    let py = document.getElementById("premise_years").value;
+    let v = document.getElementById("vintage").value;
+    let income = document.getElementById("income").value;
+    let bureau = document.getElementById("bureau").value;
+
+    document.getElementById("e1").innerText = "";
+    document.getElementById("e2").innerText = "";
+    document.getElementById("e3").innerText = "";
+    document.getElementById("e4").innerText = "";
+
+    if (py < 0 || py > 100) {
+        document.getElementById("e1").innerText = "0–100 only";
+        valid = false;
+    }
+
+    if (v < 0 || v > 100) {
+        document.getElementById("e2").innerText = "0–100 only";
+        valid = false;
+    }
+
+    if (income <= 0) {
+        document.getElementById("e3").innerText = "Income must be > 0";
+        valid = false;
+    }
+
+    if (!( (bureau >= 300 && bureau <= 900) || (bureau >= -1 && bureau <= 6) )) {
+        document.getElementById("e4").innerText = "300–900 or NTC (-1 to 6)";
+        valid = false;
+    }
+
+    return valid;
+}
+
 function calculate() {
 
-    let res = document.getElementById("res").value;
-    let premise = document.getElementById("premise").value;
-    let premiseYears = parseFloat(document.getElementById("premise_years").value) || 0;
-    let co = document.getElementById("co").value;
-    let vintage = parseFloat(document.getElementById("vintage").value) || 0;
-    let sector = document.getElementById("sector").value;
-    let expense = parseFloat(document.getElementById("expense").value) || 0;
-    let income = parseFloat(document.getElementById("income").value) || 1;
-    let emi = parseFloat(document.getElementById("emi").value) || 0;
-    let bureau = parseFloat(document.getElementById("bureau").value);
+if (!validate()) return;
 
-    // 1. Residential
-    let resScore = (res === "SELF" || res === "FAMILY") ? 10 : 0;
+let res = document.getElementById("res").value;
+let premise = document.getElementById("premise").value;
+let py = +document.getElementById("premise_years").value;
+let co = document.getElementById("co").value;
+let v = +document.getElementById("vintage").value;
+let sector = document.getElementById("sector").value;
+let expense = +document.getElementById("expense").value;
+let income = +document.getElementById("income").value;
+let emi = +document.getElementById("emi").value;
+let bureau = +document.getElementById("bureau").value;
 
-    // 2. Premise
-    let premiseScore = 0;
-    if (premise === "OWNED") premiseScore = 10;
-    else {
-        if (premiseYears >= 4) premiseScore = 5;
-        else if (premiseYears >= 3) premiseScore = 4;
-        else if (premiseYears >= 2) premiseScore = 3;
-        else if (premiseYears >= 1) premiseScore = 1;
-        else premiseScore = 0;
-    }
+// scoring logic same as before
+let resScore = (res === "SELF" || res === "FAMILY") ? 10 : 0;
 
-    // 3. Co-borrower
-    let coScore = (co === "YES") ? 10 : 0;
+let premiseScore = premise === "OWNED" ? 10 :
+(py>=4?5:py>=3?4:py>=2?3:py>=1?1:0);
 
-    // 4. Vintage
-    let vintageScore = 0;
-    if (vintage >= 4) vintageScore = 10;
-    else if (vintage >= 3) vintageScore = 8;
-    else if (vintage >= 2) vintageScore = 5;
-    else if (vintage >= 1) vintageScore = 3;
+let coScore = co==="YES"?10:0;
 
-    // 5. Sector
-    let sectorScore = (sector === "LOW") ? 10 : (sector === "MEDIUM") ? 5 : 0;
+let vintageScore = v>=4?10:v>=3?8:v>=2?5:v>=1?3:0;
 
-    // 6. Expense Ratio
-    let ratio = (expense / income) * 100;
-    let expScore = 0;
-    if (ratio < 30) expScore = 10;
-    else if (ratio < 35) expScore = 8;
-    else if (ratio < 40) expScore = 5;
-    else if (ratio <= 50) expScore = 3;
+let sectorScore = sector==="LOW"?10:sector==="MEDIUM"?5:0;
 
-    // 7. FOIR
-    let foir = (emi / income) * 100;
-    let foirScore = 0;
-    if (foir <= 10) foirScore = 10;
-    else if (foir <= 20) foirScore = 8;
-    else if (foir <= 30) foirScore = 6;
-    else if (foir <= 40) foirScore = 4;
-    else if (foir <= 50) foirScore = 2;
+let ratio = (expense/income)*100;
+let expScore = ratio<30?10:ratio<35?8:ratio<40?5:ratio<=50?3:0;
 
-    // 8. Bureau
-    let bureauScore = 0;
-    if (bureau >= 800) bureauScore = 10;
-    else if (bureau >= 785) bureauScore = 9.5;
-    else if (bureau >= 770) bureauScore = 9;
-    else if (bureau >= 755) bureauScore = 8.5;
-    else if (bureau >= 740) bureauScore = 8;
-    else if (bureau >= 725) bureauScore = 7.5;
-    else if (bureau >= 710) bureauScore = 7;
-    else if (bureau >= 695) bureauScore = 6.5;
-    else if (bureau >= 680) bureauScore = 6;
-    else if (bureau >= 665) bureauScore = 5.5;
-    else if (bureau >= 650) bureauScore = 5;
-    else bureauScore = 2;
+let foir = (emi/income)*100;
+let foirScore = foir<=10?10:foir<=20?8:foir<=30?6:foir<=40?4:foir<=50?2:0;
 
-    // Final weighted score (out of 10)
-    let finalScore =
-        resScore * 0.10 +
-        premiseScore * 0.05 +
-        coScore * 0.05 +
-        vintageScore * 0.05 +
-        sectorScore * 0.05 +
-        expScore * 0.05 +
-        foirScore * 0.25 +
-        bureauScore * 0.40;
+let bureauScore =
+bureau>=800?10:bureau>=785?9.5:bureau>=770?9:bureau>=755?8.5:
+bureau>=740?8:bureau>=725?7.5:bureau>=710?7:bureau>=695?6.5:
+bureau>=680?6:bureau>=665?5.5:bureau>=650?5:2;
 
-    let final100 = finalScore * 10;
+let final = (
+resScore*0.10 + premiseScore*0.05 + coScore*0.05 +
+vintageScore*0.05 + sectorScore*0.05 + expScore*0.05 +
+foirScore*0.25 + bureauScore*0.40
+)*10;
 
-    // Decision
-    let risk, rate, decision;
+let risk, rate, decision;
 
-    if (final100 >= 70) {
-        risk = "LOW RISK";
-        rate = "27%";
-        decision = "APPROVED";
-    } else if (final100 >= 50) {
-        risk = "MID RISK";
-        rate = "27.5%";
-        decision = "APPROVED";
-    } else if (final100 >= 40) {
-        risk = "HIGH RISK";
-        rate = "28.5%";
-        decision = "APPROVED";
-    } else {
-        risk = "VERY HIGH RISK";
-        rate = "-";
-        decision = "REJECTED";
-    }
+if(final>=70){risk="LOW";rate="27%";decision="APPROVED";}
+else if(final>=50){risk="MID";rate="27.5%";decision="APPROVED";}
+else if(final>=40){risk="HIGH";rate="28.5%";decision="APPROVED";}
+else{risk="VERY HIGH";rate="-";decision="REJECTED";}
 
-    document.getElementById("result").innerHTML = `
-        <h3>Score: ${final100.toFixed(2)} / 100</h3>
-        <h3>Risk: ${risk}</h3>
-        <h3>Decision: ${decision}</h3>
-        <h3>Interest Rate: ${rate}</h3>
-    `;
+document.getElementById("result").innerHTML = `
+<div class="score">${final.toFixed(1)}</div>
+<div class="result-item">Risk: ${risk}</div>
+<div class="result-item">Decision: ${decision}</div>
+<div class="result-item">Interest Rate: ${rate}</div>
+`;
+
 }
 
 </script>
