@@ -1,44 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>ACFL BRE Calculator</title>
+
+<!-- Stylish Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
 body {
     margin: 0;
-    font-family: "Book Antiqua", serif;
+    font-family: 'Poppins', sans-serif;
     background: #f4f6f9;
 }
 
 /* HEADER */
 header {
     background: #f5e6d3;
-    padding: 12px;
-    text-align: center;
-    font-weight: bold;
-    color: #e85222;
-    font-size: 22px;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h2 {
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+header img {
+    height: 40px;
 }
 
 /* LAYOUT */
 .main {
     display: flex;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 70px);
 }
 
-/* CARD */
-.card {
-    background: white;
-    margin: 15px;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    height: calc(100% - 30px);
+/* LEFT */
+.left {
+    width: 50%;
+    padding: 18px;
+    background: #fff;
 }
 
-/* PANELS */
-.left { width: 50%; }
-.right { width: 50%; background: #fff3ef; }
+/* RIGHT */
+.right {
+    width: 50%;
+    padding: 18px;
+    background: #fff3ef;
+}
 
 /* GRID */
 .grid {
@@ -48,36 +62,73 @@ header {
 }
 
 /* FIELD */
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
 label {
     font-size: 12px;
+    margin-bottom: 3px;
 }
+
+/* UNIFORM INPUT */
 input, select {
+    height: 32px;
     width: 100%;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid #cde7d8;
+    font-size: 13px;
+    box-sizing: border-box;
+}
+
+/* subtle green focus */
+input:focus, select:focus {
+    outline: none;
+    border-color: #4caf50;
+    box-shadow: 0 0 4px rgba(76,175,80,0.3);
+}
+
+/* ERROR */
+.error {
+    font-size: 10px;
+    color: red;
+}
+
+/* BUTTONS */
+.btn {
+    margin-top: 12px;
     height: 34px;
     border-radius: 6px;
-    border: 1px solid #b7e1c1;
-    padding: 5px;
-}
-
-/* BUTTON */
-.btn {
-    width: 48%;
-    height: 45px;
-    border-radius: 8px;
     border: none;
-    margin-top: 15px;
-    font-size: 15px;
     cursor: pointer;
+    font-size: 13px;
 }
 
-.calc { background: #4caf50; color: white; }
-.refresh { background: #e85222; color: white; }
+.calc {
+    background: #e85222;
+    color: white;
+}
 
-/* OUTPUT */
+.refresh {
+    background: #4caf50;
+    color: white;
+    margin-left: 10px;
+}
+
+/* RESULT */
+.card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
 .score {
-    font-size: 30px;
-    font-weight: bold;
+    font-size: 28px;
     color: #e85222;
+    font-weight: bold;
 }
 
 table {
@@ -90,166 +141,221 @@ table {
 th, td {
     border-bottom: 1px solid #ddd;
     padding: 6px;
+    text-align: left;
 }
-</style>
 
+th {
+    background: #f5f5f5;
+}
+
+</style>
 </head>
 
 <body>
 
-<header>ACFL BRE CALCULATOR</header>
+<header>
+    <h2>ACFL BRE Calculator</h2>
+    <img src="ACFL Logo PNG WhiteBG.png">
+</header>
 
 <div class="main">
 
-<!-- INPUT -->
+<!-- LEFT -->
 <div class="left">
-<div class="card">
 
 <div class="grid">
 
+<div class="field">
 <label>Client Name</label>
 <input id="name">
+</div>
 
+<div class="field">
 <label>Loan ID</label>
 <input id="loan">
+</div>
 
-<label>Residential Stability</label>
+<div class="field">
+<label>Residential</label>
 <select id="res">
-<option>SELF</option><option>FAMILY</option><option>RENT</option>
+<option value="SELF">Self</option>
+<option value="FAMILY">Family</option>
+<option value="RENT">Rent</option>
 </select>
+</div>
 
-<label>Business Premise Stability</label>
-<select id="prem">
-<option>OWNED</option><option>RENTED</option>
+<div class="field">
+<label>Premise</label>
+<select id="premise">
+<option value="OWNED">Owned</option>
+<option value="RENTED">Rented</option>
 </select>
+</div>
 
-<label>Years in Business Premise</label>
+<div class="field">
+<label>Premise Years</label>
 <input type="number" id="py">
+<div class="error" id="e1"></div>
+</div>
 
-<label>Co-Borrower Co-residence</label>
+<div class="field">
+<label>Co-Borrower</label>
 <select id="co">
-<option value="YES">Same Household</option>
-<option value="NO">Out of Station</option>
+<option value="YES">Same</option>
+<option value="NO">Out</option>
 </select>
+</div>
 
-<label>Business Vintage</label>
+<div class="field">
+<label>Vintage</label>
 <input type="number" id="v">
+<div class="error" id="e2"></div>
+</div>
 
-<label>Business Sector Risk</label>
-<select id="sec">
-<option>LOW</option><option>MEDIUM</option><option>HIGH</option>
+<div class="field">
+<label>Sector</label>
+<select id="sector">
+<option value="LOW">Low</option>
+<option value="MEDIUM">Medium</option>
+<option value="HIGH">High</option>
 </select>
+</div>
 
-<label>Total Household Expense</label>
+<div class="field">
+<label>Expense</label>
 <input type="number" id="exp">
+</div>
 
+<div class="field">
 <label>Household Income</label>
 <input type="number" id="inc">
+<div class="error" id="e3"></div>
+</div>
 
-<label>Current EMI Obligation</label>
+<div class="field">
+<label>EMI</label>
 <input type="number" id="emi">
+</div>
 
-<label>Credit Bureau Score</label>
+<div class="field">
+<label>Bureau</label>
 <input type="number" id="bur">
+<div class="error" id="e4"></div>
+</div>
 
 </div>
 
-<button class="btn calc" onclick="calculate()">Calculate</button>
+<button class="btn calc" onclick="calc()">Calculate</button>
 <button class="btn refresh" onclick="location.reload()">Refresh</button>
 
 </div>
-</div>
 
-<!-- OUTPUT -->
+<!-- RIGHT -->
 <div class="right">
-<div class="card" id="output">
+
+<div class="card" id="out">
 
 <div class="score">--</div>
-<div>Client Name: --</div>
+<div>Client: --</div>
 <div>Loan ID: --</div>
 <div>Risk: --</div>
 <div>Decision: --</div>
-<div>Interest Rate: --</div>
+<div>Rate: --</div>
 
 <table>
 <tr><th>Parameter</th><th>Score</th><th>Weight</th><th>Weighted</th></tr>
-<tbody></tbody>
+<tbody id="table"></tbody>
 </table>
 
 </div>
+
 </div>
 
 </div>
 
 <script>
 
-function calculate(){
+function validate(){
+let py=pyv.value,v=vv.value,inc=incv.value,bur=burv.value;
+e1.innerText=e2.innerText=e3.innerText=e4.innerText="";
 
-let name = document.getElementById("name").value;
-let loan = document.getElementById("loan").value;
-let res = document.getElementById("res").value;
-let prem = document.getElementById("prem").value;
-let py = +document.getElementById("py").value;
-let co = document.getElementById("co").value;
-let v = +document.getElementById("v").value;
-let sec = document.getElementById("sec").value;
-let exp = +document.getElementById("exp").value;
-let inc = +document.getElementById("inc").value;
-let emi = +document.getElementById("emi").value;
-let bur = +document.getElementById("bur").value;
+let ok=true;
+
+if(py<0||py>100){e1.innerText="0-100";ok=false;}
+if(v<0||v>100){e2.innerText="0-100";ok=false;}
+if(inc<=0){e3.innerText=">0";ok=false;}
+if(!((bur>=300&&bur<=900)||(bur>=-1&&bur<=6))){e4.innerText="300-900 or NTC";ok=false;}
+
+return ok;
+}
+
+function calc(){
+
+if(!validate()) return;
+
+let name=namev.value,loan=loanv.value;
+let res=resv.value,prem=premv.value,py=+pyv.value,co=cov.value;
+let v=+vv.value,sec=secv.value,exp=+expv.value,inc=+incv.value;
+let emi=+emiv.value,bur=+burv.value;
 
 // scoring
-let resS = (res=="SELF"||res=="FAMILY")?10:0;
-let premS = prem=="OWNED"?10:(py>=4?5:py>=3?4:py>=2?3:py>=1?1:0);
-let coS = co=="YES"?10:0;
-let vS = v>=4?10:v>=3?8:v>=2?5:v>=1?3:0;
-let secS = sec=="LOW"?10:sec=="MEDIUM"?5:0;
+let resS=(res=="SELF"||res=="FAMILY")?10:0;
+let premS=prem=="OWNED"?10:(py>=4?5:py>=3?4:py>=2?3:py>=1?1:0);
+let coS=co=="YES"?10:0;
+let vS=v>=4?10:v>=3?8:v>=2?5:v>=1?3:0;
+let secS=sec=="LOW"?10:sec=="MEDIUM"?5:0;
 
-let expS = (exp/inc*100)<30?10:(exp/inc*100)<35?8:(exp/inc*100)<40?5:(exp/inc*100)<=50?3:0;
+let ratio=(exp/inc)*100;
+let expS=ratio<30?10:ratio<35?8:ratio<40?5:ratio<=50?3:0;
 
-let foir = emi/inc*100;
-let foirS = foir<=10?10:foir<=20?8:foir<=30?6:foir<=40?4:foir<=50?2:0;
+let foir=(emi/inc)*100;
+let foirS=foir<=10?10:foir<=20?8:foir<=30?6:foir<=40?4:foir<=50?2:0;
 
-let burS = bur>=800?10:bur>=785?9.5:bur>=770?9:bur>=755?8.5:
+let burS=bur>=800?10:bur>=785?9.5:bur>=770?9:bur>=755?8.5:
 bur>=740?8:bur>=725?7.5:bur>=710?7:bur>=695?6.5:
 bur>=680?6:bur>=665?5.5:bur>=650?5:2;
 
-let final = (resS*.10+premS*.05+coS*.05+vS*.05+secS*.05+expS*.05+foirS*.25+burS*.40)*10;
+let final=(resS*.10+premS*.05+coS*.05+vS*.05+secS*.05+expS*.05+foirS*.25+burS*.40)*10;
 
-// decision
 let risk,rate,dec;
+
 if(final>=70){risk="LOW";rate="27%";dec="APPROVED";}
 else if(final>=50){risk="MID";rate="27.5%";dec="APPROVED";}
 else if(final>=40){risk="HIGH";rate="28.5%";dec="APPROVED";}
 else{risk="VERY HIGH";rate="-";dec="REJECTED";}
 
 // output
-let tableRows = `
-<tr><td>Residential Stability</td><td>${resS}</td><td>10%</td><td>${(resS*0.10).toFixed(2)}</td></tr>
-<tr><td>Business Premise Stability</td><td>${premS}</td><td>5%</td><td>${(premS*0.05).toFixed(2)}</td></tr>
-<tr><td>Co-Borrower</td><td>${coS}</td><td>5%</td><td>${(coS*0.05).toFixed(2)}</td></tr>
-<tr><td>Business Vintage</td><td>${vS}</td><td>5%</td><td>${(vS*0.05).toFixed(2)}</td></tr>
-<tr><td>Sector Risk</td><td>${secS}</td><td>5%</td><td>${(secS*0.05).toFixed(2)}</td></tr>
-<tr><td>Expense Ratio</td><td>${expS}</td><td>5%</td><td>${(expS*0.05).toFixed(2)}</td></tr>
-<tr><td>FOIR</td><td>${foirS}</td><td>25%</td><td>${(foirS*0.25).toFixed(2)}</td></tr>
-<tr><td>Bureau</td><td>${burS}</td><td>40%</td><td>${(burS*0.40).toFixed(2)}</td></tr>
-`;
-
-document.getElementById("output").innerHTML = `
-<div class="score">Risk Score: ${final.toFixed(1)}</div>
-<div>Client Name: ${name}</div>
-<div>Loan ID: ${loan}</div>
-<div>Risk: ${risk}</div>
-<div>Decision: ${dec}</div>
-<div>Interest Rate: ${rate}</div>
+out.innerHTML=`
+<div class="score">${final.toFixed(1)}</div>
+<div><b>Client:</b> ${name}</div>
+<div><b>Loan ID:</b> ${loan}</div>
+<div><b>Risk:</b> ${risk}</div>
+<div><b>Decision:</b> ${dec}</div>
+<div><b>Rate:</b> ${rate}</div>
 
 <table>
 <tr><th>Parameter</th><th>Score</th><th>Weight</th><th>Weighted</th></tr>
-${tableRows}
+${row("Residential",resS,0.10)}
+${row("Premise",premS,0.05)}
+${row("CoBorrower",coS,0.05)}
+${row("Vintage",vS,0.05)}
+${row("Sector",secS,0.05)}
+${row("Expense Ratio",expS,0.05)}
+${row("FOIR",foirS,0.25)}
+${row("Bureau",burS,0.40)}
 </table>
 `;
 
 }
+
+function row(n,s,w){
+return `<tr><td>${n}</td><td>${s}</td><td>${w*100}%</td><td>${(s*w).toFixed(2)}</td></tr>`;
+}
+
+// shortcuts
+let namev=name,loanv=loan,resv=res,premv=premise,pyv=py,cov=co,
+vv=v,secv=sector,expv=exp,incv=inc,emiv=emi,burv=bur;
+
 </script>
 
 </body>
