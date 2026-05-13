@@ -293,7 +293,8 @@ function calc(){
 
 if(!validate()) return;
 
-let name=namev.value,loan=loanv.value;
+let name = document.getElementById("name").value;
+let loan = document.getElementById("loan").value;
 let res=resv.value,prem=premv.value,py=+pyv.value,co=cov.value;
 let v=+vv.value,sec=secv.value,exp=+expv.value,inc=+incv.value;
 let emi=+emiv.value,bur=+burv.value;
@@ -327,22 +328,22 @@ else{risk="VERY HIGH";rate="-";dec="REJECTED";}
 // output
 out.innerHTML=`
 <div class="score">${final.toFixed(1)}</div>
-<div><b>Client:</b> ${name}</div>
+<div><b>Client Name:</b> ${name}</div>
 <div><b>Loan ID:</b> ${loan}</div>
 <div><b>Risk:</b> ${risk}</div>
 <div><b>Decision:</b> ${dec}</div>
-<div><b>Rate:</b> ${rate}</div>
+<div><b>Interest Rate:</b> ${rate}</div>
 
 <table>
-<tr><th>Parameter</th><th>Score</th><th>Weight</th><th>Weighted</th></tr>
-${row("Residential Score",resS,0.10)}
-${row("Business Premise Score",premS,0.05)}
-${row("CoBorrower CoResidense",coS,0.05)}
-${row("Vintage Score",vS,0.05)}
-${row("Sector Score",secS,0.05)}
-${row("IncomeExpense Ratio",expS,0.05)}
-${row("FOIR",foirS,0.25)}
-${row("CB Score",burS,0.40)}
+<tr><th>Parameter</th><th>Score</th><th>Weight</th><th>Weighted Score</th></tr>
+${row("Residential Score",resS,1.0)}
+${row("Business Premise Score",premS,0.5)}
+${row("CoBorrower CoResidense",coS,0.5)}
+${row("Vintage Score",vS,0.5)}
+${row("Sector Score",secS,0.5)}
+${row("IncomeExpense Ratio",expS,0.5)}
+${row("FOIR Score",foirS,2.5)}
+${row("CB Score",burS,4.0)}
 </table>
 `;
 
@@ -353,8 +354,7 @@ return `<tr><td>${n}</td><td>${s}</td><td>${w*100}%</td><td>${(s*w).toFixed(2)}<
 }
 
 // shortcuts
-let namev=name,loanv=loan,resv=res,premv=premise,pyv=py,cov=co,
-vv=v,secv=sector,expv=exp,incv=inc,emiv=emi,burv=bur;
+
 
 </script>
 
