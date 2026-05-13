@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ACFL BRE Calculator</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        margin: 0;
+    }
+
+    header {
+        background: #e85222;
+        color: white;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    header img {
+        height: 40px;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 20px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #e85222;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        background: #e85222;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #c9441c;
+    }
+
+    .result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        background: #fff3ef;
+    }
+
+    .result h3 {
+        margin: 5px 0;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>ACFL BRE Calculator</h1>
+    <!-- Replace with actual logo -->
+    <img src="https://via.placeholder.com/100x40?text=ACFL" alt="ACFL Logo">
+</header>
+
+<div class="container">
+
+<h2>Input Details</h2>
+
+<div class="grid">
+
+<label>Residential Ownership</label>
+<select id="res">
+    <option value="SELF">Self Owned</option>
+    <option value="FAMILY">Family Owned</option>
+    <option value="RENT">Rented</option>
+</select>
+
+<label>Business Premise</label>
+<select id="premise">
+    <option value="OWNED">Owned</option>
+    <option value="RENTED">Rented</option>
+</select>
+
+<label>Years in Premise</label>
+<input type="number" id="premise_years">
+
+<label>Co-Borrower</label>
+<select id="co">
+    <option value="YES">Same Household</option>
+    <option value="NO">Out of Station</option>
+</select>
+
+<label>Business Vintage (Years)</label>
+<input type="number" id="vintage">
+
+<label>Sector Risk</label>
+<select id="sector">
+    <option value="LOW">Low</option>
+    <option value="MEDIUM">Medium</option>
+    <option value="HIGH">High</option>
+</select>
+
+<label>Household Expense</label>
+<input type="number" id="expense">
+
+<label>Business Income</label>
+<input type="number" id="income">
+
+<label>EMI</label>
+<input type="number" id="emi">
+
+<label>Bureau Score</label>
+<input type="number" id="bureau">
+
+</div>
+
+<button onclick="calculate()">Calculate Score</button>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+function calculate() {
+
+    let res = document.getElementById("res").value;
+    let premise = document.getElementById("premise").value;
+    let premiseYears = parseFloat(document.getElementById("premise_years").value) || 0;
+    let co = document.getElementById("co").value;
+    let vintage = parseFloat(document.getElementById("vintage").value) || 0;
+    let sector = document.getElementById("sector").value;
+    let expense = parseFloat(document.getElementById("expense").value) || 0;
+    let income = parseFloat(document.getElementById("income").value) || 1;
+    let emi = parseFloat(document.getElementById("emi").value) || 0;
+    let bureau = parseFloat(document.getElementById("bureau").value);
+
+    // 1. Residential
+    let resScore = (res === "SELF" || res === "FAMILY") ? 10 : 0;
+
+    // 2. Premise
+    let premiseScore = 0;
+    if (premise === "OWNED") premiseScore = 10;
+    else {
+        if (premiseYears >= 4) premiseScore = 5;
+        else if (premiseYears >= 3) premiseScore = 4;
+        else if (premiseYears >= 2) premiseScore = 3;
+        else if (premiseYears >= 1) premiseScore = 1;
+        else premiseScore = 0;
+    }
+
+    // 3. Co-borrower
+    let coScore = (co === "YES") ? 10 : 0;
+
+    // 4. Vintage
+    let vintageScore = 0;
+    if (vintage >= 4) vintageScore = 10;
+    else if (vintage >= 3) vintageScore = 8;
+    else if (vintage >= 2) vintageScore = 5;
+    else if (vintage >= 1) vintageScore = 3;
+
+    // 5. Sector
+    let sectorScore = (sector === "LOW") ? 10 : (sector === "MEDIUM") ? 5 : 0;
+
+    // 6. Expense Ratio
+    let ratio = (expense / income) * 100;
+    let expScore = 0;
+    if (ratio < 30) expScore = 10;
+    else if (ratio < 35) expScore = 8;
+    else if (ratio < 40) expScore = 5;
+    else if (ratio <= 50) expScore = 3;
+
+    // 7. FOIR
+    let foir = (emi / income) * 100;
+    let foirScore = 0;
+    if (foir <= 10) foirScore = 10;
+    else if (foir <= 20) foirScore = 8;
+    else if (foir <= 30) foirScore = 6;
+    else if (foir <= 40) foirScore = 4;
+    else if (foir <= 50) foirScore = 2;
+
+    // 8. Bureau
+    let bureauScore = 0;
+    if (bureau >= 800) bureauScore = 10;
+    else if (bureau >= 785) bureauScore = 9.5;
+    else if (bureau >= 770) bureauScore = 9;
+    else if (bureau >= 755) bureauScore = 8.5;
+    else if (bureau >= 740) bureauScore = 8;
+    else if (bureau >= 725) bureauScore = 7.5;
+    else if (bureau >= 710) bureauScore = 7;
+    else if (bureau >= 695) bureauScore = 6.5;
+    else if (bureau >= 680) bureauScore = 6;
+    else if (bureau >= 665) bureauScore = 5.5;
+    else if (bureau >= 650) bureauScore = 5;
+    else bureauScore = 2;
+
+    // Final weighted score (out of 10)
+    let finalScore =
+        resScore * 0.10 +
+        premiseScore * 0.05 +
+        coScore * 0.05 +
+        vintageScore * 0.05 +
+        sectorScore * 0.05 +
+        expScore * 0.05 +
+        foirScore * 0.25 +
+        bureauScore * 0.40;
+
+    let final100 = finalScore * 10;
+
+    // Decision
+    let risk, rate, decision;
+
+    if (final100 >= 70) {
+        risk = "LOW RISK";
+        rate = "27%";
+        decision = "APPROVED";
+    } else if (final100 >= 50) {
+        risk = "MID RISK";
+        rate = "27.5%";
+        decision = "APPROVED";
+    } else if (final100 >= 40) {
+        risk = "HIGH RISK";
+        rate = "28.5%";
+        decision = "APPROVED";
+    } else {
+        risk = "VERY HIGH RISK";
+        rate = "-";
+        decision = "REJECTED";
+    }
+
+    document.getElementById("result").innerHTML = `
+        <h3>Score: ${final100.toFixed(2)} / 100</h3>
+        <h3>Risk: ${risk}</h3>
+        <h3>Decision: ${decision}</h3>
+        <h3>Interest Rate: ${rate}</h3>
+    `;
+}
+
+</script>
+
+</body>
+</html>
